@@ -1,0 +1,10 @@
+{
+  "name": "sms-management-api",
+  "version": "1.0.0",
+  "description": "this is an lm output 6.2",
+  "main": "index.js",
+  "repository": "https://github.com/koechkevin/sms-management-api.git",
+  "author": "Kevin Koech",
+  "license": "MIT",
+  "private": false
+}
