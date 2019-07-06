@@ -1,5 +1,5 @@
-describe('test', () =>{
+describe('test', () => {
   it('passes', () => {
 
-  })
+  });
 });

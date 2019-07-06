@@ -12,6 +12,7 @@
     "start": "NODE_ENV=production node dist/index.js",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
     "migrate": "node_modules/.bin/sequelize db:migrate",
+    "lint": "./node_modules/.bin/eslint",
     "test": "NODE_ENV=test yarn migrate && jest --forceExit --coverage",
     "start:dev": "NODE_ENV=development nodemon --exec babel-node src/index.js"
   },
@@ -33,6 +34,10 @@
     "@babel/node": "^7.5.0",
     "@babel/preset-env": "^7.5.0",
     "@babel/register": "^7.4.4",
-    "coveralls": "^3.0.4"
+    "babel-eslint": "^10.0.2",
+    "coveralls": "^3.0.4",
+    "eslint": "^6.0.1",
+    "eslint-config-airbnb": "^17.1.1",
+    "eslint-plugin-import": "^2.18.0"
   }
 }
