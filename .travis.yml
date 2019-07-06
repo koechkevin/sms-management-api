@@ -27,3 +27,4 @@ after_success:
   - yarn coveralls
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
   - COVERALLS_REPO_TOKEN=$coveralls
+  - CC_TEST_REPORTER_ID=$codeclimate
