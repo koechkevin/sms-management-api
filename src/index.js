@@ -1,7 +1,7 @@
 import app from './app';
-import dotenv from 'dotenv';
+import env from 'dotenv';
 
-dotenv.config();
+env.config();
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
