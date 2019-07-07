@@ -3,7 +3,6 @@ module.exports = {
     id: {
       allowNull: false,
       autoIncrement: true,
-      primaryKey: true,
       type: Sequelize.INTEGER,
     },
     name: {
@@ -11,6 +10,9 @@ module.exports = {
     },
     number: {
       type: Sequelize.INTEGER,
+      allowNull: false,
+      unique: true,
+      primaryKey: true,
     },
     createdAt: {
       allowNull: false,

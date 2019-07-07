@@ -1,11 +1,14 @@
 import express from 'express';
+import bodyParser from 'body-parser';
+import expressValidator from 'express-validator';
+import routes from './controllers';
 
-const app = express();
-app.use((req, res, next) => {
-  // eslint-disable-next-line no-console
-  console.log(req.originalUrl);
-  next();
-});
+const expressApp = express();
+
+expressApp.use(bodyParser.json());
+expressApp.use(expressValidator());
+const app = routes(expressApp);
+
 app.use('*', (req, res) => {
   res
     .status(404)
