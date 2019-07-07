@@ -1,9 +1,9 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "",
-    "description": "",
-    "version": "1.0"
+    "title": "sms-management-api",
+    "description": "This is sms management api",
+    "version": "1.1"
   },
   "produces": ["application/json"],
   "host": "manage-sms.herokuapp.com",
@@ -11,7 +11,7 @@
   "paths": {
     "/api/contacts": {
       "post": {
-        "description": "contacts",
+        "description": "Create a contact to enable you login and send messages",
         "parameters": [
           {
             "in": "body",
@@ -45,6 +45,7 @@
     },
     "/api/auth/login": {
       "post": {
+        "description": "Login with registered number and password to obtain a token",
         "parameters": [
           {
             "in": "body",
@@ -75,7 +76,7 @@
     },
     "/api/sms": {
       "get": {
-        "description": "contacts",
+        "description": "Get all sms associated with your number",
         "parameters": [{
           "in": "header",
           "name": "Authorization",
@@ -88,7 +89,7 @@
         }
       },
       "post": {
-        "description": "contacts",
+        "description": "send an sms to a particular contact already registered",
         "parameters": [
           {
             "in": "body",
