@@ -3,4 +3,4 @@
 [![Build Status](https://travis-ci.org/koechkevin/sms-management-api.svg?branch=master)](https://travis-ci.org/koechkevin/sms-management-api)
 #### sms-management-api
 
-The documentation for this api can be accessed [here](https://manage-sms.herokuapp.com/#/)
+The documentation for this api can be accessed [here](https://manage-sms.herokuapp.com/docs/#/)

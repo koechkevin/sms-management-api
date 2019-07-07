@@ -10,7 +10,8 @@ const expressApp = express();
 expressApp.use(bodyParser.json());
 expressApp.use(expressValidator());
 const app = routes(expressApp);
-app.use('', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('*', (req, res) => {
   res
