@@ -1,12 +1,12 @@
 module.exports = {
   clearMocks: true,
   collectCoverageFrom: [
-    'src/**/*.(js|jsx)',
+    'src/database/**/*.(js|jsx)',
+    'src/controllers/contacts/contactsValidator.js',
     '!src/index.js',
     '!src/app.js',
     '!src/views/index.js',
-    '!src/api/database/models/index.js',
-    '!src/api/database/migrations/**/*.js',
+    '!src/database/migrations/**/*.js',
   ],
   coverageDirectory: 'coverage',
   setupFiles: ['<rootDir>/setupFiles.js'],

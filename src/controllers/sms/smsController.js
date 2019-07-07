@@ -1,4 +1,3 @@
-import { Op } from 'sequelize';
 import jwtDecode from 'jwt-decode';
 import models from '../../database/models';
 
