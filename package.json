@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "transpile": "babel src --out-dir dist -s",
-    "build": "rm -rf dist && yarn migrate && yarn transpile",
+    "build": "rm -rf dist && yarn migrate && yarn transpile && cp src/swagger.json ./dist",
     "start": "NODE_ENV=production node dist/index.js",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
     "migrate": "node_modules/.bin/sequelize db:migrate",
