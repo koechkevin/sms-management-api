@@ -1,0 +1,144 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "",
+    "description": "",
+    "version": "1.0"
+  },
+  "produces": ["application/json"],
+  "host": "manage-sms.herokuapp.com",
+  "basePath": "/",
+  "paths": {
+    "/api/contacts": {
+      "post": {
+        "description": "contacts",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "contacts",
+            "schema": {
+              "type": "object",
+              "required": ["name", "number", "password"],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "number": {
+                  "type": "integer"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Created"
+          },
+          "422": {
+            "description": "errors"
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "login",
+            "schema": {
+              "type": "object",
+              "required": ["number", "password"],
+              "properties": {
+                "number": {
+                  "type": "integer"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "token"
+          },
+          "422": {
+            "description": "errors"
+          }
+        }
+      }
+    },
+    "/api/sms": {
+      "get": {
+        "description": "contacts",
+        "parameters": [{
+          "in": "header",
+          "name": "Authorization",
+          "type": "string"
+        }],
+        "responses": {
+          "401": {
+            "description": "unauthorized"
+          }
+        }
+      },
+      "post": {
+        "description": "contacts",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "contacts",
+            "schema": {
+              "type": "object",
+              "required": ["to", "message"],
+              "properties": {
+                "to": {
+                  "type": "integer"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },{
+            "in": "header",
+            "name": "Authorization",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Created"
+          },
+          "422": {
+            "description": "errors"
+          }
+        }
+      },
+      "delete": {
+        "description": "delete my contact with sms",
+        "parameters": [{
+          "in": "header",
+          "name": "Authorization",
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "Contact successfully deleted"
+          },
+          "404": {
+            "description": "Contact does not exist"
+          },
+          "401": {
+            "description": "Invalid token"
+          }
+        }
+      }
+    }
+  }
+}

@@ -26,16 +26,21 @@ export const getMessages = async (req, res) => {
   try {
     const { headers: { authorization } } = req;
     const decode = jwtDecode(authorization);
-    const allMessages = await models.Message.findAll({
-      where: {
-        [Op.or]: [{ sender: decode.myNumber }, { recepient: decode.myNumber }],
-      },
+    const sent = await models.Message.findAll({
+      where: { sender: decode.myNumber },
       include: [
         { model: models.Contact, as: 'from', attributes: ['name', 'number'] },
         { model: models.Contact, as: 'to', attributes: ['name', 'number'] },
       ],
     });
-    res.status(200).json({ message: allMessages });
+    const received = await models.Message.findAll({
+      where: { recepient: decode.myNumber },
+      include: [
+        { model: models.Contact, as: 'from', attributes: ['name', 'number'] },
+        { model: models.Contact, as: 'to', attributes: ['name', 'number'] },
+      ],
+    });
+    res.status(200).json({ messages: { sent, received } });
   } catch (error) {
     res.status(500).json({ error });
   }
