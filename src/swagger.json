@@ -6,31 +6,56 @@
     "version": "1.1"
   },
   "produces": ["application/json"],
-  "host": "manage-sms.herokuapp.com",
+  "host": "localhost:3000",
   "basePath": "/",
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authentication"
+    },
+    {
+      "name": "Contacts",
+      "description": "Contacts Management"
+    },
+    {
+      "name": "Messages",
+      "description": "Messages Management"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
   "paths": {
     "/api/contacts": {
       "post": {
         "description": "Create a contact to enable you login and send messages",
+        "tags": [
+          "Contacts"
+        ],
         "parameters": [
           {
             "in": "body",
             "name": "contacts",
+            "required": true,
             "schema": {
               "type": "object",
-              "required": ["name", "number", "password"],
+              "required": ["name", "number"],
               "properties": {
                 "name": {
                   "type": "string"
                 },
                 "number": {
                   "type": "integer"
-                },
-                "password": {
-                  "type": "string"
                 }
               }
             }
+          },
+          {
+            "in": "header",
+            "required": true,
+            "name": "Authorization",
+            "type": "string"
           }
         ],
         "responses": {
@@ -41,20 +66,127 @@
             "description": "errors"
           }
         }
+      },
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "description": "Get all sms associated with your number",
+        "parameters": [{
+          "in": "header",
+          "required": true,
+          "name": "Authorization",
+          "type": "string"
+        }],
+        "responses": {
+          "401": {
+            "description": "unauthorized"
+          }
+        }
+      }
+    },
+    "/api/contacts/{number}": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "description": "Single contact",
+        "parameters": [{
+          "in": "header",
+          "name": "Authorization",
+          "type": "string"
+        }, {
+          "name": "number",
+          "in": "path",
+          "description": "number of the contact to retrieve",
+          "required": true,
+          "type": "integer"
+        }],
+        "responses": {
+          "401": {
+            "description": "unauthorized"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Contacts"
+        ],
+        "description": "Single contact",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          }, {
+            "name": "number",
+            "in": "path",
+            "description": "number of the contact to edit",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "contacts",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "number": {
+                  "type": "integer"
+                }
+              }
+            }
+          }],
+        "responses": {
+          "401": {
+            "description": "unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Contacts"
+        ],
+        "description": "Single contact",
+        "parameters": [{
+          "in": "header",
+          "name": "Authorization",
+          "type": "string"
+        }, {
+          "name": "number",
+          "in": "path",
+          "description": "number of the contact to retrieve",
+          "required": true,
+          "type": "integer"
+        }],
+        "responses": {
+          "401": {
+            "description": "unauthorized"
+          }
+        }
       }
     },
     "/api/auth/login": {
       "post": {
         "description": "Login with registered number and password to obtain a token",
+        "tags": [
+          "Auth"
+        ],
         "parameters": [
           {
             "in": "body",
             "name": "login",
+            "required": true,
             "schema": {
               "type": "object",
-              "required": ["number", "password"],
+              "required": ["phone", "password"],
               "properties": {
-                "number": {
+                "phone": {
                   "type": "integer"
                 },
                 "password": {
@@ -74,9 +206,52 @@
         }
       }
     },
+    "/api/auth/register": {
+      "post": {
+        "description": "Register",
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "login",
+            "schema": {
+              "type": "object",
+              "required": ["name","phone","email", "password"],
+              "properties": {
+                "phone": {
+                  "type": "integer"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "422": {
+            "description": "errors"
+          }
+        }
+      }
+    },
     "/api/sms": {
       "get": {
-        "description": "Get all sms associated with your number",
+        "tags": [
+          "Messages"
+        ],
+        "description": "Get all sms",
         "parameters": [{
           "in": "header",
           "name": "Authorization",
@@ -90,6 +265,9 @@
       },
       "post": {
         "description": "send an sms to a particular contact already registered",
+        "tags": [
+          "Messages"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -123,6 +301,9 @@
       },
       "delete": {
         "description": "delete my contact with sms",
+        "tags": [
+          "Messages"
+        ],
         "parameters": [{
           "in": "header",
           "name": "Authorization",
@@ -140,6 +321,128 @@
           }
         }
       }
+    },
+    "/api/sms/{id}": {
+      "get": {
+        "tags": [
+          "Messages"
+        ],
+        "description": "Single contact",
+        "parameters": [{
+          "in": "header",
+          "name": "Authorization",
+          "type": "string"
+        }, {
+          "name": "id",
+          "in": "path",
+          "description": "id of the message to retrieve",
+          "required": true,
+          "type": "integer"
+        }],
+        "responses": {
+          "401": {
+            "description": "unauthorized"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Messages"
+        ],
+        "description": "Single contact",
+        "parameters": [{
+          "in": "header",
+          "name": "Authorization",
+          "type": "string"
+        }, {
+          "name": "id",
+          "in": "path",
+          "description": "id of the message to edit",
+          "required": true,
+          "type": "integer"
+        },{
+          "in": "body",
+          "name": "message",
+          "schema": {
+            "type": "object",
+            "required": ["message"],
+            "properties": {
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }],
+        "responses": {
+          "401": {
+            "description": "unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Messages"
+        ],
+        "description": "Single contact",
+        "parameters": [{
+          "in": "header",
+          "name": "Authorization",
+          "type": "string"
+        }, {
+          "name": "id",
+          "in": "path",
+          "description": "id of the message to edit",
+          "required": true,
+          "type": "integer"
+        }],
+        "responses": {
+          "401": {
+            "description": "unauthorized"
+          }
+        }
+      }
+    },
+    "/api/personal/sms": {
+      "get": {
+        "tags": [
+          "Messages"
+        ],
+        "description": "Get my sms",
+        "parameters": [{
+          "in": "header",
+          "name": "Authorization",
+          "type": "string"
+        }],
+        "responses": {
+          "401": {
+            "description": "unauthorized"
+          }
+        }
+      }
+    },
+    "/api/sms/contact/{contact}": {
+      "get": {
+        "tags": [
+          "Messages"
+        ],
+        "description": "messages per contact",
+        "parameters": [{
+          "in": "header",
+          "name": "Authorization",
+          "type": "string"
+        }, {
+          "name": "contact",
+          "in": "path",
+          "description": "contact to retrieve its messages",
+          "required": true,
+          "type": "integer"
+        }],
+        "responses": {
+          "401": {
+            "description": "unauthorized"
+          }
+        }
+      }
     }
-  }
+}
 }

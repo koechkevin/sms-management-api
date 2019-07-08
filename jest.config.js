@@ -2,7 +2,7 @@ module.exports = {
   clearMocks: true,
   collectCoverageFrom: [
     'src/database/**/*.(js|jsx)',
-    'src/controllers/contacts/contactsValidator.js',
+    '!src/controllers/contacts/contactsValidator.js',
     '!src/index.js',
     '!src/app.js',
     '!src/views/index.js',

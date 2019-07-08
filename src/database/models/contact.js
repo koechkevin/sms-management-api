@@ -8,16 +8,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       primaryKey: true,
     },
-    password: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-      defaultValue: '$2b$10$Quei2Gk1FUGXXz.7lNke2.leVBhPIP/OSVy9tdRGVGirj9Bc/mkQy',
-    },
   }, {});
   Contact.associate = (models) => {
     Contact.hasMany(models.Message, {
       foreignKey: 'recepient',
       as: 'to',
+    });
+    Contact.belongsTo(models.User, {
+      foreignKey: 'createdBy',
+      onDelete: 'CASCADE',
+      as: 'user',
     });
     Contact.hasMany(models.Message, {
       foreignKey: 'sender',

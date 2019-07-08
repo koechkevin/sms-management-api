@@ -18,7 +18,7 @@ describe('test', () => {
       })
       .end((err, res) => {
         if (err) done(err);
-        expect(res.status).toEqual(200);
+        expect(res.status).toEqual(401);
         done();
       });
   });

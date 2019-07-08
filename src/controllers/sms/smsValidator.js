@@ -15,4 +15,17 @@ export const validateSms = async (req, res, next) => {
   const errors = notFoundError.concat(validationErrors || []);
   return errors.length ? res.status(422).json({ errors }) : next();
 };
-export const a = validateSms;
+export const validateSmsToUpdate = async (req, res, next) => {
+  const { token: { myNumber }, params: { id } } = req;
+  const sms = await models.Message.findOne({ where: { id } });
+  if (sms.sender.toString() !== myNumber.toString()) {
+    return res.status(401).json({
+      errors: [
+        {
+          message: 'you are not authorized to edit a contact you did not create',
+        },
+      ],
+    });
+  }
+  return next();
+};

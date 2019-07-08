@@ -4,9 +4,17 @@ import models from '../../database/models';
 
 export const login = async (req, res) => {
   const { SECRET_KEY } = process.env;
-  const { body: { number, password } } = req;
-  const contact = await models.Contact.findOne({
-    where: { number },
+  const {
+    body: {
+      number, password, phone, email,
+    },
+  } = req;
+  const n = number ? { phone: number } : undefined;
+  const p = phone ? { phone } : undefined;
+  const e = email ? { email } : undefined;
+  const where = n || p || e;
+  const contact = await models.User.findOne({
+    where,
   });
   if (!contact) {
     return res.status(404).json({ message: 'Number not found' });
@@ -15,7 +23,7 @@ export const login = async (req, res) => {
     return res.status(200).json({
       message: 'success',
       token: jwt.sign({
-        id: contact.id, myNumber: contact.number, name: contact.name,
+        id: contact.id, myNumber: contact.phone, name: contact.name, email: contact.email,
       }, SECRET_KEY, { expiresIn: '12h' }),
     });
   }
@@ -25,4 +33,29 @@ export const login = async (req, res) => {
   });
 };
 
-export const a = '';
+export const register = async (req, res) => {
+  try {
+    const {
+      body: {
+        name, phone, email, password,
+      },
+    } = req;
+    const encryptedPassword = await crypt.hashSync(password.toString() || 'password', crypt.genSaltSync(10));
+    const newUser = await models.User.create({
+      name, phone, email, password: encryptedPassword,
+    });
+    const alreadyInContacts = await models.Contact.findOne({
+      where: {
+        number: phone,
+      },
+    });
+    if (!alreadyInContacts) {
+      await models.Contact.create({
+        number: phone, name, createdBy: phone,
+      });
+    }
+    res.status(201).json({ user: newUser });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+};
